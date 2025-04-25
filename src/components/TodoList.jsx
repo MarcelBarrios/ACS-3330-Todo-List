@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleComplete, deleteTodo } from "../redux/todoSlice";
+import { FILTERS } from "../redux/filtersSlice"; // 1️⃣
 
 const TodoList = () => {
-    const todos = useSelector((state) => state.todos);
+    const todos = useSelector((state) => {
+        console.log("Todos from useSelector:", state.todos);
+        return state.todos;
+    });
+
+    const filter = useSelector((state) => state.filters); // 2️⃣
     const dispatch = useDispatch();
     const [removingId, setRemovingId] = useState(null);
 
@@ -15,9 +21,16 @@ const TodoList = () => {
         }, 300);
     };
 
+    // 3️⃣
+    const filteredTodos = todos.filter((todo) => {
+        if (filter === FILTERS.ACTIVE) return !todo.completed;
+        if (filter === FILTERS.COMPLETED) return todo.completed;
+        return true; // ALL
+    });
+
     return (
         <ul>
-            {todos.map((todo) => (
+            {filteredTodos.map((todo) => ( // 4️⃣ Just update this line!
                 <li
                     key={todo.id}
                     className={`${todo.completed ? "completed" : ""} ${removingId === todo.id ? "removed" : ""}`}

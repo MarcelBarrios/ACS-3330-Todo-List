@@ -1,6 +1,6 @@
 export const saveState = (state) => {
     try {
-        localStorage.setItem("todos", JSON.stringify(state));
+        localStorage.setItem("todos", JSON.stringify(state)); // Save the whole state
     } catch (error) {
         console.error("Error saving state to LocalStorage:", error);
     }
@@ -8,8 +8,8 @@ export const saveState = (state) => {
 
 export const loadState = () => {
     try {
-        const savedTodos = localStorage.getItem("todos");
-        return savedTodos ? { todos: JSON.parse(savedTodos) } : undefined; // Ensure it returns an object
+        const savedState = localStorage.getItem("todos");
+        return savedState ? JSON.parse(savedState) : undefined; // Return the parsed state directly
     } catch (error) {
         console.error("Error loading state from LocalStorage:", error);
         return undefined;
